@@ -22,10 +22,6 @@ def get_info():
     hash_id = generate_hash(id)
     ip = request.remote_addr
 
-    # print(email)
-    # print(ip)
-    # print(hash_id)
-    # print(data)
     db_client.write_to_mongodb(data)
     return 'Ok'
 
