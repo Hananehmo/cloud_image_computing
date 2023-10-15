@@ -1,5 +1,6 @@
 import hashlib
 import db_client
+import rabbitmq
 from flask import request, jsonify, Flask
 import socket
 
@@ -23,6 +24,7 @@ def get_info():
     ip = request.remote_addr
 
     db_client.write_to_mongodb(data)
+    rabbitmq.add_id(id)
     return 'Ok'
 
 
