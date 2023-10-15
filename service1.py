@@ -1,8 +1,11 @@
 import hashlib
+import boto3
+from werkzeug.utils import secure_filename
+
+import s3
 import db_client
 import rabbitmq
-from flask import request, jsonify, Flask
-import socket
+from flask import request, Flask
 
 app = Flask(__name__)
 
@@ -15,16 +18,27 @@ def generate_hash(id):
 
 @app.route('/user', methods=['POST'])
 def get_info():
-    data = request.get_json()
-    name = data.get('name')
-    last_name = data.get('last_name')
-    email = data.get('email')
-    id = data.get('id')
+    name = request.form.get('name')
+    last_name = request.form.get('last_name')
+    email = request.form.get('email')
+    id = request.form.get('id')
     hash_id = generate_hash(id)
     ip = request.remote_addr
-
-    db_client.write_to_mongodb(data)
+    image = request.files['image']
+    filename = secure_filename(id + '.jpg')
+    folder_path = 'H:\\cloud\\Tamrin 1\\image_upload'
+    image.save(folder_path + '/' + filename)
+    print("file saved successfully")
+    db_client.write_to_mongodb({
+        'name': name,
+        'last_name': last_name,
+        'email': email,
+        'id': id,
+        'hash_id': hash_id,
+        'ip': ip
+    })
     rabbitmq.add_id(id)
+    s3.s3_upload(id)
     return 'Ok'
 
 
