@@ -19,15 +19,17 @@ def s3_upload(id):
     else:
         try:
             bucket = s3_resource.Bucket('hanamo')
-            file_path = 'H:\\cloud\\Tamrin 1\\image_upload\\' + id + '.jpg'
-            object_name = id + ".jpg"
+            for i in range(2):
+                file_path = 'image_upload\\' + id + '_' + str(i + 1) + '.jpg'
+                print(file_path)
+                object_name = id + '_' + str(i+1) + ".jpg"
 
-            with open(file_path, "rb") as image:
-                bucket.put_object(
-                    ACL='private',
-                    Body=image,
-                    Key=object_name
-                )
+                with open(file_path, "rb") as image:
+                    bucket.put_object(
+                        ACL='private',
+                        Body=image,
+                        Key=object_name
+                    )
         except ClientError as e:
             logging.error(e)
 
@@ -49,12 +51,13 @@ def s3_download(id):
             # bucket
             bucket = s3_resource.Bucket('hanamo')
 
-            object_name = id + ".jpg"
-            download_path = 'H:\\cloud\\Tamrin 1\\image_upload'
+            for i in range(2):
+                object_name = id + "_" + str(i + 1) + ".jpg"
+                download_path = 'image_downloaded\\' + id + '_' + str(i + 1) + '.jpg'
 
-            bucket.download_file(
-                object_name,
-                download_path
-            )
+                bucket.download_file(
+                    object_name,
+                    download_path
+                )
         except ClientError as e:
             logging.error(e)
