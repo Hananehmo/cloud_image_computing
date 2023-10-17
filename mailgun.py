@@ -8,7 +8,7 @@ def send_email(to, text):
     url = f'https://api.mailgun.net/v3/{DOMAIN}/messages'
     auth = ('api', API_KEY)
     data = {
-        'from': 'Your Name <hnnemntzr200@gmail.com>',
+        'from': 'Hana <hnnemntzr200@gmail.com>',
         'to': to,
         'subject': 'Your Status',
         'text': text
@@ -22,4 +22,3 @@ def send_email(to, text):
         print('Error sending email:', response.json())
 
 
-send_email('recipient@example.com', 'This is the email content.')
