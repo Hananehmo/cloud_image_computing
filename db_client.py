@@ -1,5 +1,8 @@
-from pymongo import MongoClient
+import pymongo
 from pymongo.mongo_client import MongoClient
+
+
+
 
 uri = "mongodb+srv://ihanamo:hanahm22@cluster0.lkhehcb.mongodb.net/?retryWrites=true&w=majority"
 database = "test"
@@ -47,6 +50,7 @@ def read_from_mongodb(filter={}):
 
         for document in documents:
             print(document)
+            return document
 
     except Exception as e:
         print("Error:", e)
@@ -54,3 +58,16 @@ def read_from_mongodb(filter={}):
     finally:
         client.close()
 
+
+def update_mongodb(data, new_state):
+    client = pymongo.MongoClient(uri)
+    db = client[database]
+    coll = db[collection]
+    # base64_data = generate_hash(data)
+    # Update the document with the given data
+    coll.update_one(
+        {'hash_id': data},
+        {'$set': {'state': new_state}}
+    )
+
+    client.close()

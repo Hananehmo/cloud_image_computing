@@ -22,7 +22,7 @@ def s3_upload(id):
             for i in range(2):
                 file_path = 'image_upload\\' + id + '_' + str(i + 1) + '.jpg'
                 print(file_path)
-                object_name = id + '_' + str(i+1) + ".jpg"
+                object_name = id + '_' + str(i + 1) + ".jpg"
 
                 with open(file_path, "rb") as image:
                     bucket.put_object(
@@ -54,7 +54,7 @@ def s3_download(id):
             for i in range(2):
                 object_name = id + "_" + str(i + 1) + ".jpg"
                 download_path = 'image_downloaded\\' + id + '_' + str(i + 1) + '.jpg'
-
+                # print(object_name)
                 bucket.download_file(
                     object_name,
                     download_path
